@@ -27,10 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/'
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'common.apps.CommonConfig', # 추가
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

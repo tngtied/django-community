@@ -14,4 +14,6 @@ urlpatterns = [
     path('answer/delete/<int:answer_id>/', answer_views.answer_delete, name = 'answer_delete'),
     path('question/vote/<int:question_id>/', question_views.question_vote, name = 'question_vote'),
     path('answer/vote/<int:answer_id>/', answer_views.answer_vote, name = 'answer_vote'),
+    path('comment/create/question/<int:question_id>/', question_views.comment_create_question, name = 'comment_create_question'),
+    path('answer/comment/create/<int:answer_id>/', answer_views.comment_create_answer, name = 'comment_create_answer'),
 ]

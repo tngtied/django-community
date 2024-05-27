@@ -26,7 +26,7 @@ def index(request):
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     answer_list = question.answer_set.all().annotate(num_voter = Count('voter')).order_by('-num_voter', '-create_date')
-    print(answer_list)
+    
     paginator = Paginator(answer_list, 10)
     page_object = paginator.get_page(1)
     # print("page object %s" % page_object.count)

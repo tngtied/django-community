@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from ..models import Question, Answer
-from ..forms import AnswerForm
+from ..forms import AnswerForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -64,3 +64,20 @@ def answer_vote(request, answer_id):
     return redirect('{}#answer_{}'.format(
     resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
 
+@login_required(login_url='common:login')
+def comment_create_answer(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.create_date = timezone.now()
+            comment.answer = answer
+            comment.save()
+            return redirect('{}#comment_{}'.format(
+    resolve_url('pybo:detail', question_id=answer.question.id), comment.id))
+    else:
+        form = CommentForm()
+    context = {'answer': answer, 'form': form}
+    return render(request, 'pybo/comment_form.html', context)

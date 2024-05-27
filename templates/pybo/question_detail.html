@@ -15,7 +15,7 @@
     <h2 class="border-bottom py-2">{{ question.subject }}</h2>
     <div class="card my-3">
         <div class="card-body">
-            <div class="card-text" ">{{ question.content|mark }}</div>
+            <div class="card-text">{{ question.content|mark }}</div>
             <div class="d-flex justify-content-end">
                 {% if question.modify_date %}
                 <div class="badge bg-light text-dark p-2 text-start mx-3">
@@ -38,15 +38,42 @@
                 <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary"                 data-uri="{% url 'pybo:question_delete' question.id  %}">삭제</a>
                 {% endif %}
             </div>
+            <form action="{% url 'pybo:comment_create_question' question.id %}" method="post" class="my-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="content" class="form-label">댓글내용</label>
+                    <textarea {% if not user.is_authenticated %} disabled {% endif %}
+                    name="content" id="content" class="form-control" rows="10"></textarea>
+                </div>
+                <input type="submit" value="댓글등록" class="btn btn-primary">
+            </form>
         </div>
     </div>
+    <!-- 질문 댓글 -->
+    <h5 class="border-bottom my-3 py-2">{{question.comment.count}}개의 댓글이 있습니다.</h5>
+    {% for comment in question.comment.all %}
+    <a id="answer_{{ answer.id }}"></a> <!-- 답변 위치로 이동하기 위한 앵커 -->
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text"">{{ comment.content|mark }}</div>
+            <div class="d-flex justify-content-end">
+                {% if comment.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">modified at</div>
+                    <div>{{ comment.modify_date }}</div>
+                </div>
+                {% endif %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">{{ comment.author.username }}</div>
+                    <div>{{ comment.create_date }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- 질문 댓글 끝 -->
     <!-- 답변 -->
     <h5 class="border-bottom my-3 py-2">{{question.answer_set.count}}개의 답변이 있습니다.</h5>
-    {% if answer_list.paginator.count > 0 %}
-    <p>answer list more than 0</p>
-    {% else %}
-    <p>answer list is empty</p>
-    {% endif %}
     {% for answer in answer_list %}
     <a id="answer_{{ answer.id }}"></a> <!-- 답변 위치로 이동하기 위한 앵커 -->
     <div class="card my-3">
@@ -76,6 +103,15 @@
                 data-uri="{% url 'pybo:answer_delete' answer.id  %}">삭제</a>
                 {% endif %}
             </div>
+            <form action="{% url 'pybo:comment_create_answer' answer.id %}" method="post" class="my-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="content" class="form-label">댓글 내용</label>
+                    <textarea {% if not user.is_authenticated %} disabled {% endif %}
+                    name="content" id="content" class="form-control" rows="10"></textarea>
+                </div>
+                <input type="submit" value="댓글등록" class="btn btn-primary">
+            </form>
         </div>
     </div>
     {% endfor %}

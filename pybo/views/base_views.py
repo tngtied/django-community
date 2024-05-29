@@ -2,9 +2,11 @@ from django.core.paginator import Paginator
 from ..models import Question
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Count
+from .common_views import render_with_common
 
 # Create your views here.
 
+@render_with_common
 def index(request):
     page = request.GET.get('page', '1')
     kw = request.GET.get('kw', '')
@@ -21,7 +23,8 @@ def index(request):
     page_object = paginator.get_page(page)
 
     context = {'question_list': page_object, 'page' : page, 'kw' : kw}
-    return render(request, 'pybo/question_list.html', context)
+    return {'context': context, 'template': 'pybo/question_list.html'}
+    # return render(request, 'pybo/question_list.html', context=context)
 
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -32,4 +35,4 @@ def detail(request, question_id):
     # print("page object %s" % page_object.count)
 
     context = {'question': question, 'answer_list': page_object}
-    return render(request, 'pybo/question_detail.html', context)
+    return render(request, 'pybo/question_detail.html', context= context)

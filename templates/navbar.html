@@ -24,6 +24,11 @@
                     <a class="nav-link" href="{% url 'common:signup' %}">회원가입</a>
                     {% endif %}
                 </li>
+                {% for category in category_list %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'common:category' category.id %}">{{ category.name }}</a>
+                </li>
+                {% endfor %}
             </ul>
         </div>
     </div>

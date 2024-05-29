@@ -18,7 +18,7 @@ def question_create(request):
     else:
         form = QuestionForm()
     context = {'form': form}
-    return render(request, 'pybo/question_form.html', context)
+    return render(request, 'pybo/question_form.html', context=context)
 
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
@@ -37,7 +37,7 @@ def question_modify(request, question_id):
     else:
         form = QuestionForm(instance=question)
     context = {'form': form}
-    return render(request, 'pybo/question_form.html', context)
+    return render(request, 'pybo/question_form.html', context=context)
 
 @login_required(login_url='common:login')
 def question_delete(request, question_id):
@@ -73,4 +73,4 @@ def comment_create_question(request, question_id):
     else:
         form = CommentForm()
     context = {'form': form}
-    return render(request, 'pybo/comment_form.html', context)
+    return render(request, 'pybo/comment_form.html', context=context)

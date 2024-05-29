@@ -16,13 +16,12 @@ def answer_create(request, question_id):
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
-            return redirect('{}#answer_{}'.format(
-    resolve_url('pybo:detail', question_id=question.id), answer.id))
+            return redirect('{}#answer_{}'.format(resolve_url('pybo:detail', question_id=question.id), answer.id))
 
     else:
         form = AnswerForm()
     context = {'question': question, 'form': form}
-    return render(request, 'pybo/question_detail.html', context)
+    return render(request, 'pybo/question_detail.html', context=context)
 
 @login_required(login_url='common:login')
 def answer_modify(request, answer_id):
@@ -43,7 +42,7 @@ def answer_modify(request, answer_id):
     else:
         form = AnswerForm(instance=answer)
     context = {'answer': answer, 'form': form}
-    return render(request, 'pybo/answer_form.html', context)
+    return render(request, 'pybo/answer_form.html', context=context)
 
 @login_required(login_url='common:login')
 def answer_delete(request, answer_id):
@@ -80,4 +79,4 @@ def comment_create_answer(request, answer_id):
     else:
         form = CommentForm()
     context = {'answer': answer, 'form': form}
-    return render(request, 'pybo/comment_form.html', context)
+    return render(request, 'pybo/comment_form.html', context=context)

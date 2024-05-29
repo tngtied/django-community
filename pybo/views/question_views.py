@@ -21,6 +21,7 @@ def question_create(request):
         form = QuestionForm()
     context = {'form': form}
     return {'context': context, 'template': 'pybo/question_form.html'}
+@render_with_common
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -38,8 +39,7 @@ def question_modify(request, question_id):
     else:
         form = QuestionForm(instance=question)
     context = {'form': form}
-    return render(request, 'pybo/question_form.html', context=context)
-
+    return {'context': context, 'template': 'pybo/question_form.html'}
 @login_required(login_url='common:login')
 def question_delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

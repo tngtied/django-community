@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from ..models import Question
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Count
-from .common_views import render_with_common
+from .common_render import render_with_common
 
 # Create your views here.
 

@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 
 class Question(models.Model):
-    category = models.ForeignKey('Category', on_delete = models.SET_NULL, null=True, blank=True),
     author = models.ForeignKey(User, on_delete = models.CASCADE, related_name='author_question')
     subject = models.CharField(max_length=200)
     content = models.TextField()
@@ -12,7 +11,7 @@ class Question(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(User, related_name='voter_question')
     comment = models.ManyToManyField('Comment', related_name='comment_question')
-    
+    category = models.ForeignKey('Category', on_delete = models.SET_NULL, null=True, blank=True)
     def __str__(self):
         return self.subject
 

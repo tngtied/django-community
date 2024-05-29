@@ -1,9 +1,9 @@
 from django import forms
 from pybo.models import Question, Answer, Comment, Category
 
-category_choice = [ (category.id, category.name) for category in Category.objects.all() ]
+
 class QuestionForm(forms.ModelForm):
-    category = forms.ChoiceField(choices=category_choice)
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label='카테고리 선택')
     class Meta:
         model = Question
         fields = ['subject', 'content', 'category']

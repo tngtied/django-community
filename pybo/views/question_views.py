@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from ..models import Question
+from ..models import Question, Category
 from ..forms import QuestionForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -15,6 +15,9 @@ def question_create(request):
             question = form.save(commit=False)
             question.author = request.user
             question.create_date = timezone.now()
+            # print(">>", form.cleaned_data['category'])
+            question.category = form.cleaned_data['category']
+            # question.category = Category.objects.get(pk = form.cleaned_data['category'])
             question.save()
             return redirect('pybo:index')
     else:

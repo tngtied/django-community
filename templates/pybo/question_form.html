@@ -25,6 +25,17 @@
                    value="{{ form.subject.value|default_if_none:'' }}">
         </div>
         <div class="mb-3">
+            <label for="category" class="form-label">카테고리</label>
+            <select class="form-select" name="category" id="category">
+                <option value="" {% if form.category.value == "" %}selected{% endif %}>선택하세요</option>
+                {% for category in category_list %}
+                <option value="{{ category.id }}" {% if form.category.value == category.id %}selected{% endif %}>
+                    {{ category.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="content" class="form-label">내용</label>
             <textarea class="form-control" name="content"
                       id="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>

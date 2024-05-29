@@ -4,7 +4,9 @@ from ..models import Question
 from ..forms import QuestionForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .base_views import render_with_common
 
+@render_with_common
 @login_required(login_url='common:login')
 def question_create(request):
     if request.method == 'POST':
@@ -18,8 +20,7 @@ def question_create(request):
     else:
         form = QuestionForm()
     context = {'form': form}
-    return render(request, 'pybo/question_form.html', context=context)
-
+    return {'context': context, 'template': 'pybo/question_form.html'}
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
     question = get_object_or_404(Question, pk=question_id)

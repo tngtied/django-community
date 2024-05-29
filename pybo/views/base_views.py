@@ -22,10 +22,11 @@ def index(request):
     paginator = Paginator(question_list, 10)
     page_object = paginator.get_page(page)
 
-    context = {'question_list': page_object, 'page' : page, 'kw' : kw}
+    context = {'question_list': page_object, 'page': page, 'kw' : kw}
     return {'context': context, 'template': 'pybo/question_list.html'}
     # return render(request, 'pybo/question_list.html', context=context)
 
+@render_with_common
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     answer_list = question.answer_set.all().annotate(num_voter = Count('voter')).order_by('-num_voter', '-create_date')
@@ -35,4 +36,4 @@ def detail(request, question_id):
     # print("page object %s" % page_object.count)
 
     context = {'question': question, 'answer_list': page_object}
-    return render(request, 'pybo/question_detail.html', context= context)
+    return {'context': context, 'template': 'pybo/question_detail.html'}

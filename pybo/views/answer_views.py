@@ -4,7 +4,9 @@ from ..models import Question, Answer
 from ..forms import AnswerForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .base_views import render_with_common
 
+@render_with_common
 @login_required(login_url='common:login')
 def answer_create(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
@@ -23,6 +25,7 @@ def answer_create(request, question_id):
     context = {'question': question, 'form': form}
     return render(request, 'pybo/question_detail.html', context=context)
 
+@render_with_common
 @login_required(login_url='common:login')
 def answer_modify(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -44,6 +47,7 @@ def answer_modify(request, answer_id):
     context = {'answer': answer, 'form': form}
     return render(request, 'pybo/answer_form.html', context=context)
 
+@render_with_common
 @login_required(login_url='common:login')
 def answer_delete(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -53,6 +57,7 @@ def answer_delete(request, answer_id):
         answer.delete()
     return redirect('pybo:detail', question_id=answer.question.id)
 
+@render_with_common
 @login_required(login_url='common:login')
 def answer_vote(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
@@ -63,6 +68,7 @@ def answer_vote(request, answer_id):
     return redirect('{}#answer_{}'.format(
     resolve_url('pybo:detail', question_id=answer.question.id), answer.id))
 
+@render_with_common
 @login_required(login_url='common:login')
 def comment_create_answer(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)

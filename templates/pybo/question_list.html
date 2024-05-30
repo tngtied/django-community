@@ -2,6 +2,9 @@
 {% load pybo_filter %}
 {% block content %}
 <div class="container my-3">
+    {% if category %}
+    <h2 class="text-center">{{ category.name }}</h2>
+    {% endif %}
     <div class="row my-3">
         <div class="col-6">
             <a href="{% url 'pybo:question_create' %}" class="btn btn-primary">질문 등록하기</a>

@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from common.forms import UserForm
+from pybo.models import Question, Category
+from django.core.paginator import Paginator
+from pybo.views.common_render import render_with_common
 
 def logout_view(request):
     logout(request)
@@ -22,5 +25,12 @@ def signup(request):
     else:
         form = UserForm()
     return render(request, 'common/signup.html', {'form': form})
+@render_with_common
 def category(request, category_id):
-    return render(request, 'common/category.html')
+    posts = Question.objects.filter(category_id=category_id).order_by('-create_date')
+    paginator = Paginator(posts, 10)
+    page = paginator.get_page(1)
+    category = Category.objects.get(pk=category_id)
+    context = {'question_list':page, 'category':category, 'page':1}
+    return {'context': context, 'template': 'pybo/question_list.html'}
+    return render(request, 'pybo/question_list.html', context)

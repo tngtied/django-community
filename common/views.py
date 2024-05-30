@@ -1,11 +1,13 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
+from django.shortcuts import redirect, resolve_url
 from common.forms import UserForm, UserInfoForm
 from pybo.models import Question, Category
 from django.core.paginator import Paginator
 from pybo.views.common_render import render_with_common
-
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
 def logout_view(request):
     logout(request)
     return redirect('index')

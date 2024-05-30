@@ -30,6 +30,14 @@ ALLOWED_HOSTS = []
 # 로그인 성공후 이동하는 URL
 LOGIN_REDIRECT_URL = '/'
 
+# SMTP 설정
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'tngtied@gmail.com'
+EMAIL_HOST_PASSWORD = 'jpaj uyrj rkdj yimr'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Application definition
 

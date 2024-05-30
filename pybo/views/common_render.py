@@ -5,8 +5,9 @@ from django.shortcuts import render
 def render_with_common(func):
     @wraps(func)
     def wrapper(request, *args, **kwargs):
+        print(">>function: ", func.__name__)
         request_data = func(request, *args, **kwargs)
-        print("request_data %s" % request_data)
+        print(">>request_data: ", request_data)
         if isinstance(request_data, dict):
             additional_data = {'category_list': Category.objects.all()}
             request_data['context'].update(additional_data)

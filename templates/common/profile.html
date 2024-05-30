@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- 내 정보를 표시하는 페이지 -->
+    <!-- 만약 내 정보라면 -->
+    {% if user == request.user %}
     <h2 class="text-center">내 정보</h2>
+    {% else %}
+    <h2 class="text-center">{{ user.username }}님의 정보</h2>
+    {% endif %}
+    {% if user == request.user %}
     <div class="row my-3">
         <div class="col-6">
             <a href="{% url 'common:profile_update' %}" class="btn btn-primary">수정하기</a>
         </div>
-        <div class="col-6">
-            <a href="{% url 'common:password_change' %}" class="btn btn-primary">비밀번호 변경하기</a>
-        </div>
+{#        <div class="col-6">#}
+{#            <a href="{% url 'common:password_reset' %}" class="btn btn-primary">비밀번호 변경하기</a>#}
+{#        </div>#}
     </div>
+    {% endif %}
     <table class="table">
         <tbody>
             <tr>

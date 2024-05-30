@@ -1,4 +1,3 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, resolve_url
@@ -6,8 +5,7 @@ from common.forms import UserForm, UserInfoForm
 from pybo.models import Question, Category
 from django.core.paginator import Paginator
 from pybo.views.common_render import render_with_common
-from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 def logout_view(request):
     logout(request)
     return redirect('index')
@@ -38,13 +36,17 @@ def category(request, category_id):
     return render(request, 'pybo/question_list.html', context)
 
 @render_with_common
-def mypage(request):
-    user = request.user
+def profile(request, user_id):
+    if request.path == '/mypage/' and request.user.is_authenticated and request.user.id == user_id:
+        user_id = request.user.id
+    user = User.objects.get(pk=user_id)
+    print(">> user object: ", user)
     posts = Question.objects.filter(author=user).order_by('-create_date')
     paginator = Paginator(posts, 10)
     page = paginator.get_page(1)
-    context = {'articles':page, 'page':1}
-    return {'context': context, 'template': 'common/mypage.html'}
+    context = {'articles':page, 'page':1, 'user':user}
+    print(">> ", len(posts))
+    return {'context': context, 'template': 'common/profile.html'}
 
 @render_with_common
 def profile_update(request):

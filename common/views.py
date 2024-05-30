@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
-from common.forms import UserForm
+from common.forms import UserForm, UserInfoForm
 from pybo.models import Question, Category
 from django.core.paginator import Paginator
 from pybo.views.common_render import render_with_common
@@ -34,3 +34,26 @@ def category(request, category_id):
     context = {'question_list':page, 'category':category, 'page':1}
     return {'context': context, 'template': 'pybo/question_list.html'}
     return render(request, 'pybo/question_list.html', context)
+
+@render_with_common
+def mypage(request):
+    user = request.user
+    posts = Question.objects.filter(author=user).order_by('-create_date')
+    paginator = Paginator(posts, 10)
+    page = paginator.get_page(1)
+    context = {'articles':page, 'page':1}
+    return {'context': context, 'template': 'common/mypage.html'}
+
+@render_with_common
+def profile_update(request):
+    user = request.user
+    if request.method == "POST":
+        form = UserInfoForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('common:mypage')
+    else:
+        form = UserInfoForm(instance=user)
+    context = {'form': form}
+    return {'context': context, 'template': 'common/user_info_change.html'}
+    # return render(request, 'common/profile_update.html', context)

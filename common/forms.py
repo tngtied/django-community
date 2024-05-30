@@ -6,3 +6,9 @@ class UserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "password1", "password2", "email")
+
+class UserInfoForm(forms.ModelForm):
+    email = forms.EmailField(label="이메일")
+    class Meta:
+        model = User
+        fields = ("username", "email")

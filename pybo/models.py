@@ -31,3 +31,5 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     content = models.TextField()
     create_date = models.DateTimeField()
+    question = models.ForeignKey(Question, on_delete = models.CASCADE, null=True, blank=True, related_name='question_comment')
+    answer = models.ForeignKey(Answer, on_delete = models.CASCADE, null=True, blank=True, related_name='answer_comment')

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, resolve_url
 from common.forms import UserForm, UserInfoForm
-from pybo.models import Question, Category
+from pybo.models import Question, Category, Answer, Comment
 from django.core.paginator import Paginator
 from pybo.views.common_render import render_with_common
 from django.contrib.auth.models import User
@@ -40,12 +40,12 @@ def profile(request, user_id):
     if request.path == '/mypage/' and request.user.is_authenticated and request.user.id == user_id:
         user_id = request.user.id
     user = User.objects.get(pk=user_id)
-    print(">> user object: ", user)
     posts = Question.objects.filter(author=user).order_by('-create_date')
     paginator = Paginator(posts, 10)
     page = paginator.get_page(1)
-    context = {'articles':page, 'page':1, 'user':user}
-    print(">> ", len(posts))
+    answers = Answer.objects.filter(author=user).order_by('-create_date')
+    comments = Comment.objects.filter(author=user).order_by('-create_date')
+    context = {'articles':page, 'page':1, 'user':user, 'answers':answers, 'comments':comments}
     return {'context': context, 'template': 'common/profile.html'}
 
 @render_with_common

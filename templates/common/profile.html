@@ -44,6 +44,7 @@
             </tr>
         </thead>
         <tbody>
+        <div class = "container-md">
             {% for article in articles %}
             <tr>
                 <td>{{ article.pk }}</td>
@@ -51,7 +52,57 @@
                 <td>{{ article.create_date }}</td>
             </tr>
             {% endfor %}
+        </div>
         </tbody>
     </table>
-
+    <!-- 내가 작성한 답변 목록을 표시하는 페이지 -->
+    <h2 class="text-center">내가 작성한 답변</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>내용</th>
+                <th>작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+        <div class = "container-md">
+            {% for answer in answers %}
+            <tr>
+                <td>{{ answer.pk }}</td>
+                <td><a href="{% url 'pybo:detail' answer.question.pk %}">{{ answer.content }}</a></td>
+                <td>{{ answer.create_date }}</td>
+            </tr>
+            {% endfor %}
+        </div>
+        </tbody>
+    </table>
+    <!-- 내가 작성한 댓글 목록을 표시하는 페이지 -->
+    <h2 class="text-center">내가 작성한 댓글</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>내용</th>
+                <th>작성일시</th>
+            </tr>
+        </thead>
+        <tbody>
+        <div class = "container-md">
+            {% for comment in comments %}
+            <tr>
+                <td>{{ comment.pk }}</td>
+                {% if comment.question != null %}
+                <td><a href="{% url 'pybo:detail' comment.question.pk %}">{{ comment.content }}</a></td>
+                {% elif comment.answer != null %}
+                <td><a href="{% url 'pybo:detail' comment.answer.question.pk %}">{{ comment.content }}</a></td>
+                {% else %}
+                <td>{{ comment.content }}</td>
+                {% endif %}
+                <td>{{ comment.create_date }}</td>
+            </tr>
+            {% endfor %}
+        </div>
+        </tbody>
+    </table>
 {% endblock %}

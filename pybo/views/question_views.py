@@ -5,6 +5,7 @@ from ..forms import QuestionForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .base_views import render_with_common
+from django.db import transaction
 
 @render_with_common
 @login_required(login_url='common:login')
@@ -61,6 +62,7 @@ def question_vote(request, question_id):
         question.voter.add(request.user)
     return redirect('pybo:detail', question_id=question_id)
 
+@transaction.atomic
 @login_required(login_url='common:login')
 def comment_create_question(request, question_id):
     if request.method == 'POST':
@@ -70,9 +72,10 @@ def comment_create_question(request, question_id):
             comment = form.save(commit=False)
             comment.author = request.user
             comment.create_date = timezone.now()
+            comment.question = question
             comment.save()
             question.comment.add(comment)
-            question.save()
+            # question.save()
             return redirect('pybo:detail', question_id=question_id)
     else:
         form = CommentForm()

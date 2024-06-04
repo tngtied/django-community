@@ -12,6 +12,7 @@ class Question(models.Model):
     voter = models.ManyToManyField(User, related_name='voter_question')
     comment = models.ManyToManyField('Comment', related_name='comment_question')
     category = models.ForeignKey('Category', on_delete = models.SET_NULL, null=True, blank=True)
+    hits = models.IntegerField(default=0)
     def __str__(self):
         return self.subject
 

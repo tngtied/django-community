@@ -5,6 +5,7 @@ from ..forms import AnswerForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .base_views import render_with_common
+from django.core.paginator import Paginator
 
 @render_with_common
 @login_required(login_url='common:login')
@@ -87,4 +88,12 @@ def comment_create_answer(request, answer_id):
     else:
         form = CommentForm()
     context = {'answer': answer, 'form': form}
-    return render(request, 'pybo/comment_form.html', context=context)
+    return {'context': context, 'template': 'pybo/answer_detail.html'}
+
+@render_with_common
+def recent_answer(request):
+    answer_list = Answer.objects.order_by('-create_date')
+    paginator = Paginator(answer_list, 10)
+    page_object = paginator.get_page(1)
+    context = {'answer_list': page_object}
+    return {'context': context, 'template': 'pybo/recent_answer.html'}

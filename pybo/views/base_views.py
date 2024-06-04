@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from ..models import Question
+from ..models import Question, Comment
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q, Count
 from .common_render import render_with_common
@@ -37,3 +37,11 @@ def detail(request, question_id):
 
     context = {'question': question, 'answer_list': page_object}
     return {'context': context, 'template': 'pybo/question_detail.html'}
+
+@render_with_common
+def recent_comment(request):
+    comment_list = Comment.objects.order_by('-create_date')
+    paginator = Paginator(comment_list, 10)
+    page_object = paginator.get_page(1)
+    context = {'comment_list': page_object}
+    return {'context': context, 'template': 'pybo/recent_comment.html'}

@@ -1,0 +1,18 @@
+<!-- 최근 등록된 댓글 모음 -->
+<div class="col-sm-5">
+    <h3 class="border-bottom py-2">최근 댓글</h3>
+    <ul>
+        {% for comment in recent_comments %}
+        <li>
+            {% if comment.question != null %}
+                <a href="{% url 'pybo:detail' comment.question.id %}">
+            {% elif comment.answer.question != null %}
+                <a href="{% url 'pybo:detail' comment.answer.question.id %}">
+            {% endif %}
+                {{ comment.content }}
+            </a>
+            <span>by {{ comment.author.username }} at {{ comment.create_date }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

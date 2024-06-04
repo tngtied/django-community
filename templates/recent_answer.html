@@ -1,0 +1,12 @@
+<!-- 최근 등록된 답변 목록 -->
+<div class="col-sm-5">
+    <h3 class="border-bottom py-2">최근 등록된 답변</h3>
+    <ul>
+        {% for answer in recent_answers %}
+        <li>
+            <a href="{% url 'pybo:detail' answer.question.pk %}">{{ answer.content }}</a>
+            <span>{{ answer.created_at }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

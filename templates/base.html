@@ -19,6 +19,12 @@
 {% block content %}
 {% endblock %}
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
+<!-- 최근 등록된 답변 목록-->
+<div class = "row align-middle">
+{% include "recent_answer.html" %}
+<!-- 최근 등록된 댓글 목록-->
+{% include "recent_comment.html" %}
+</div>
 <!-- Bootstrap JS -->
 <script src="{% static 'bootstrap.min.js' %}"></script>
 <!-- 자바스크립트 Start -->

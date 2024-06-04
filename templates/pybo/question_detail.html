@@ -27,8 +27,9 @@
                     <div class="mb-2">{{ question.author.username }}</div>
                     <div>{{ question.create_date }}</div>
                     <div>카테고리: {{ question.category.name }}</div>
+                    <div>조회수: {{ question.hits }}</div>
                 </div>
-            
+
             </div>
             <div class="my-3">
                 <a href="javascript:void(0)" data-uri="{% url 'pybo:question_vote' question.id  %}"

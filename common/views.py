@@ -6,11 +6,23 @@ from pybo.models import Question, Category, Answer, Comment
 from django.core.paginator import Paginator
 from pybo.views.common_render import render_with_common
 from django.contrib.auth.models import User
+
+@render_with_common
+def login_view(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+    return {'context': {}, 'template': 'common/login.html'}
 def logout_view(request):
     logout(request)
     return redirect('index')
 
 # Create your views here.
+@render_with_common
 def signup(request):
     if request.method == "POST":
         form = UserForm(request.POST)
@@ -24,7 +36,9 @@ def signup(request):
             return redirect('index')
     else:
         form = UserForm()
-    return render(request, 'common/signup.html', {'form': form})
+    context = {'form': form}
+    return {'context': context, 'template': 'common/signup.html'}
+    # return render(request, 'common/signup.html', {'form': form})
 @render_with_common
 def category(request, category_id):
     posts = Question.objects.filter(category_id=category_id).order_by('-create_date')

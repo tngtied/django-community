@@ -23,4 +23,6 @@ urlpatterns = [
     path('pybo/', include('pybo.urls')),
     path('common/', include('common.urls')), # 추가
     path('', base_views.index, name = 'index'),
+    path('accounts/', include('allauth.urls')), # 추가
+    # path('accounts/', include('accounts.urls')), # 추가
 ]

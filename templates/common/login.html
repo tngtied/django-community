@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container my-3">
+{% load socialaccount %}
+{# <a href="{% provider_login_url 'kakao' method='oauth2' %}" class="social--login"></a>#}
+{# <a href="{% provider_login_url 'google' method='oauth2' %}" class="social--login">#}
     <form method="post" action="{% url 'common:login' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">  <!-- 로그인 성공후 이동되는 URL -->

@@ -75,7 +75,7 @@ def comment_create_question(request, question_id):
             comment.question = question
             comment.save()
             question.comment.add(comment)
-            # question.save()
+            question.save()
             return redirect('pybo:detail', question_id=question_id)
     else:
         form = CommentForm()

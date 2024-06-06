@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect, resolve_url
+from django.shortcuts import redirect
 from common.forms import UserForm, UserInfoForm
 from pybo.models import Question, Category, Answer, Comment
 from django.core.paginator import Paginator
-from pybo.views.common_render import render_with_common
+from pybo.decorators import render_with_common
 from django.contrib.auth.models import User
 
 @render_with_common

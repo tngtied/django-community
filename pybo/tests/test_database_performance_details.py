@@ -27,12 +27,14 @@ class QuestionTest(TestCase):
         cls.question.save()
         answers = []
         for i in range(1000000):
-            answer = Answer.objects.create(
+            answer = Answer(
                 question=cls.question,
                 content='test content',
                 author=cls.author_instance,
-                create_date=timezone.now()
+                create_date=timezone.now(),
+                voter_count=i
             )
+            answers.append(answer)
         Answer.objects.bulk_create(answers)
     def test_get_question_page_1(self):
         print("test_get_question_answer_page_1")

@@ -24,6 +24,7 @@ class Answer(models.Model):
     create_date = models.DateTimeField(db_index=True)
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(User, related_name='voter_answer')
+    voter_count = models.IntegerField(default=0)
     comment = models.ManyToManyField('Comment', related_name='comment_answer')
 
 class Category(models.Model):

@@ -1,4 +1,4 @@
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from ..models import Question, Comment
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, Count
@@ -24,7 +24,12 @@ def index(request):
     print(f"type(int(page)) {type(int(page))}, value {int(page)}")
 
     paginator = Paginator(question_list, 10)
-    page_object = paginator.get_page(page)
+    try:
+        page_object = paginator.get_page(page)
+    except PageNotAnInteger:
+        page_object = paginator.get_page(1)
+    except EmptyPage:
+        page_object = paginator.get_page(paginator.num_pages)
     context = {'question_list': page_object, 'page': page, 'kw' : kw}
     return {'context': context, 'template': 'pybo/question_list.html'}
 
@@ -35,7 +40,7 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     question.hits += 1
     question.save()
-    answer_list = question.answer_set.all().order_by('-voter_count', '-create_date')
+    answer_list = question.answer_set.all().annotate(num_voter = Count('voter')).order_by('-num_voter', '-create_date')
     print(f"query of answer_list: {answer_list.query}")
     paginator = Paginator(answer_list, 10)
     page_object = paginator.get_page(page)

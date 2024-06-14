@@ -11,7 +11,7 @@ from pybo.decorators import render_with_common, log_time
 def index(request):
     page = request.GET.get('page', '1')
     kw = request.GET.get('kw', '')
-    question_list = Question.objects.order_by('-create_date')
+    question_list = Question.objects.only('id', 'subject', 'author_id').order_by('-create_date')
     print(f">> 쿼리: {question_list.query}")
     if kw:
         question_list = question_list.filter(
@@ -40,7 +40,7 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     question.hits += 1
     question.save()
-    answer_list = question.answer_set.all().annotate(num_voter = Count('voter')).order_by('-num_voter', '-create_date')
+    answer_list = question.answer_set.all().order_by('-voter_count', '-create_date')
     print(f"query of answer_list: {answer_list.query}")
     paginator = Paginator(answer_list, 10)
     page_object = paginator.get_page(page)
@@ -57,4 +57,3 @@ def recent_comment(request):
     page_object = paginator.get_page(1)
     context = {'comment_list': page_object}
     return {'context': context, 'template': 'pybo/recent_comment.html'}
-    # return render(request, 'pybo/recent_comment.html', context)

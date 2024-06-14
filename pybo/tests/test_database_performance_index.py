@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from ..decorators import log_time
 
 # Create your tests here.
-class QuestionTest(TestCase):
+class DatabasePerformanceIndexTest(TestCase):
 
     @log_time
     def setUp(self):

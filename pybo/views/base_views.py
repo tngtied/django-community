@@ -11,7 +11,7 @@ from pybo.decorators import render_with_common, log_time
 def index(request):
     page = request.GET.get('page', '1')
     kw = request.GET.get('kw', '')
-    question_list = Question.objects.only('id', 'subject', 'author_id').order_by('-create_date')
+    question_list = Question.objects.only('id').order_by('-create_date')
     print(f">> 쿼리: {question_list.query}")
     if kw:
         question_list = question_list.filter(

@@ -28,10 +28,14 @@ class DatabasePerformanceIndexTest(TestCase):
             )
             questions.append(question)
         Question.objects.bulk_create(questions)
+
+    @log_time
     def test_get_question_page_1(self):
         print("test_get_question_page_1")
         response = self.client.get('/?page=1')
         self.assertEqual(response.status_code, 200)
+
+    @log_time
     def test_get_question_page_100000(self):
         print("test_get_question_page_100000")
         response = self.client.get('/?page=100000')

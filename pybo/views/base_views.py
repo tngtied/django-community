@@ -35,7 +35,7 @@ def index(request):
 
     # 여기서 동적으로 select_related 적용
     question_page_ids = page_object.object_list.values_list('id', flat=True)
-    questions = Question.objects.filter(id__in=question_page_ids).select_related('author').prefetch_related('answer_set').order_by('-create_date').values_list('id', 'subject', 'author__username', 'create_date', 'hits', 'create_date', 'author__id', 'author__username')
+    questions = Question.objects.filter(id__in=question_page_ids).select_related('author').prefetch_related('answer_set').order_by('-create_date')
     print(f">> 쿼리: {questions.query}")
     context = {'pagination': page_object, 'question_list': questions, 'page': page, 'kw' : kw}
 

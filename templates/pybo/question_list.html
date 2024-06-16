@@ -32,7 +32,7 @@
         {% for question in question_list %}
         <tr class="text-center">
             <td>
-                {{ question_list.paginator.count |sub:question_list.start_index | sub:forloop.counter0|add:1 }}
+                {{ pagination.paginator.count |sub:pagination.start_index | sub:forloop.counter0|add:1 }}
 
             </td>
             <td class="text-start">
@@ -55,9 +55,9 @@
     <!-- 페이징처리 시작 -->
     <ul class="pagination justify-content-center">
         <!-- 이전페이지 -->
-        {% if question_list.has_previous %}
+        {% if pagination.has_previous %}
         <li class="page-item">
-            <a class="page-link" data-page="{{ question_list.previous_page_number }}"
+            <a class="page-link" data-page="{{ pagination.previous_page_number }}"
            href="javascript:void(0)">이전</a>
         </li>
         {% else %}
@@ -66,9 +66,9 @@
         </li>
         {% endif %}
         <!-- 페이지리스트 -->
-        {% for page_number in question_list.paginator.page_range %}
-        {% if page_number >= question_list.number|add:-5 and page_number <= question_list.number|add:5 %}
-        {% if page_number == question_list.number %}
+        {% for page_number in pagination.paginator.page_range %}
+        {% if page_number >= pagination.number|add:-5 and page_number <= pagination.number|add:5 %}
+        {% if page_number == pagination.number %}
         <li class="page-item active" aria-current="page">
             <a class="page-link" data-page="{{ page_number }}"
            href="javascript:void(0)">{{ page_number }}</a>
@@ -81,9 +81,9 @@
         {% endif %}
         {% endfor %}
         <!-- 다음페이지 -->
-        {% if question_list.has_next %}
+        {% if pagination.has_next %}
         <li class="page-item">
-            <a class="page-link" data-page="{{ question_list.next_page_number }}"
+            <a class="page-link" data-page="{{ pagination.next_page_number }}"
            href="javascript:void(0)">다음</a>
         </li>
         {% else %}

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from pybo.views import base_views
+from django.conf import settings # 추가
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,3 +27,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')), # 추가
     # path('accounts/', include('accounts.urls')), # 추가
 ]
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

@@ -6,6 +6,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .base_views import render_with_common
 from django.db import transaction
+import redis
+from django.conf import settings
+from django.core.cache import cache
+
+# Redis 연결 설정
+redis_client = redis.StrictRedis.from_url(settings.CACHES['default']['LOCATION'])
 
 @render_with_common
 @login_required(login_url='common:login')
@@ -20,6 +26,8 @@ def question_create(request):
             question.category = form.cleaned_data['category']
             # question.category = Category.objects.get(pk = form.cleaned_data['category'])
             question.save()
+            redis_client.rpush('index', question.id)
+            redis_client.expire('index', 60)
             return redirect('pybo:index')
     else:
         form = QuestionForm()

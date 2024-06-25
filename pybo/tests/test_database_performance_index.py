@@ -42,3 +42,11 @@ class DatabasePerformanceIndexTest(TestCase):
         # print(response.body)
         # print(response.content)
         self.assertEqual(response.status_code, 200)
+
+    @log_time
+    def test_get_question_page_100000_twice(self):
+        print("test_get_question_page_100000_twice")
+        response = self.client.get('/?page=1000000')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.get('/?page=1000000')
+        self.assertEqual(response.status_code, 200)
